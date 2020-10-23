@@ -7,6 +7,7 @@
 // TODO: finish me
 static std::string helpText{"Usage:\n"};
 
+// some testcases
 void test1() {
     std::cout << Base64::encode("") << '\n';
     std::cout << Base64::encode("f") << '\n';
@@ -15,7 +16,10 @@ void test1() {
     std::cout << Base64::encode("foob") << '\n';
     std::cout << Base64::encode("fooba") << '\n';
     std::cout << Base64::encode("foobar") << '\n';
-    // Base64::encode("abcde");
+
+    std::cout << Base64::decode(Base64::encode("f")) << '\n';
+    std::cout << Base64::decode(Base64::encode("fo")) << '\n';
+    std::cout << Base64::decode(Base64::encode("foo")) << '\n';
 }
 
 int main(int argc, char **argv) {
@@ -25,12 +29,22 @@ int main(int argc, char **argv) {
         args.push_back(argv[i]);
     
 
-    // print help text if no args given or -h
+    // print help text if no args given or -h is given anywhere
     if(argc == 1 | std::find(args.begin(), args.end(), "-h") != args.end()) {
         std::cout << helpText << '\n';
         return 0;
     }
 
+    // select the correct de- or encoding function, defaulting to
+    // Base64::encode
+    std::string (*f)(const std::string &) = Base64::encode;
 
-    test1();
+    if(std::find(args.begin(), args.end(), "-d") != args.end())
+        f = Base64::decode;
+
+    if(std::find(args.begin(), args.end(), "-e") != args.end())
+        f = Base64::encode;
+
+    // finally do the en- or decoding
+    std::cout << f(args[args.size()-1]) << '\n';
 }

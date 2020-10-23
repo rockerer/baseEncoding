@@ -1,2 +1,2 @@
 all:
-	g++ base64.cpp main.cpp -o main
+	g++ base64.cpp main.cpp -o base64
